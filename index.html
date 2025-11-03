@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist Organizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <div class="logo">
+                <span class="logo-icon">🎵</span>
+                <span class="logo-text">Music Organizer</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="home">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="#" class="nav-item" data-section="search">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">Search</span>
+                </a>
+                <a href="#" class="nav-item" data-section="library">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Your Library</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Playlist</h3>
+                <div class="playlist-info">
+                    <span id="playlistCount" class="playlist-count">0 songs</span>
+                </div>
+            </div>
+
+            <div class="sidebar-stats">
+                <div class="stat-mini">
+                    <span class="stat-label">Total Songs</span>
+                    <span id="totalSongs" class="stat-value">0</span>
+                </div>
+                <div class="stat-mini">
+                    <span class="stat-label">BST Height</span>
+                    <span id="bstHeight" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="search-container">
+                <button class="search-btn">
+                    <span>🔍</span>
+                </button>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search for songs..." onkeyup="searchSongs(event)">
+            </div>
+            <div class="top-bar-actions">
+                <button class="btn-icon" onclick="showAddSongModal()" title="Add Song">
+                    <span>➕</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-wrapper">
+            <!-- Home Section -->
+            <section id="homeSection" class="content-section active">
+                <div class="section-header">
+                    <h1>Good evening</h1>
+                    <div class="section-actions">
+                        <button class="btn-secondary" onclick="shufflePlaylist()">🔀 Shuffle</button>
+                        <button class="btn-secondary" onclick="clearPlaylist()">🗑️ Clear</button>
+                    </div>
+                </div>
+
+                <!-- Recently Played / Recommendations -->
+                <div class="cards-grid">
+                    <div class="recommendations-card">
+                        <h2 class="card-title">⭐ Top Recommendations</h2>
+                        <div id="recommendationsDisplay" class="recommendations-list">
+                            <p class="empty-state">No recommendations yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Playlist Display -->
+                <div class="playlist-section">
+                    <h2 class="section-title">Your Playlist</h2>
+                    <div id="playlistDisplay" class="songs-list">
+                        <p class="empty-state">Your playlist is empty. Add some songs!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Search Section -->
+            <section id="searchSection" class="content-section">
+                <div class="section-header">
+                    <h1>Search</h1>
+                </div>
+                <div id="searchResults" class="search-results-container">
+                    <div class="empty-search-state">
+                        <span class="empty-icon">🔍</span>
+                        <p>Search for your favorite songs</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Library Section -->
+            <section id="librarySection" class="content-section">
+                <div class="section-header">
+                    <h1>Your Library</h1>
+                </div>
+                <div id="libraryDisplay" class="songs-grid">
+                    <p class="empty-state">No songs in library yet</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bottom Player Bar -->
+    <footer class="player-bar">
+        <div class="player-info">
+            <div class="now-playing-art">
+                <div class="art-placeholder">🎵</div>
+            </div>
+            <div class="now-playing-details">
+                <div id="nowPlayingSong" class="now-playing-title">Not playing</div>
+                <div class="now-playing-artist" id="nowPlayingArtist">-</div>
+            </div>
+            <button class="like-btn" title="Like">
+                <span>❤️</span>
+            </button>
+        </div>
+
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-btn" onclick="playPrevious()" title="Previous">
+                    <span>⏮️</span>
+                </button>
+                <button class="control-btn play-btn" id="playPauseBtn" onclick="playPause()" title="Play/Pause">
+                    <span>▶️</span>
+                </button>
+                <button class="control-btn" onclick="playNext()" title="Next">
+                    <span>⏭️</span>
+                </button>
+            </div>
+            <div class="progress-bar-container">
+                <span class="time-current" id="timeCurrent">0:00</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="time-total" id="timeTotal">0:00</span>
+            </div>
+        </div>
+
+        <div class="player-actions">
+            <div class="queue-info" id="queueStatus">Queue: Empty</div>
+            <button class="action-btn" onclick="showVisualizer()" title="Visualizer">
+                <span>📊</span>
+            </button>
+        </div>
+    </footer>
+
+    <!-- Add Song Modal -->
+    <div id="addSongModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Song</h2>
+                <button class="modal-close" onclick="closeAddSongModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Song Title</label>
+                    <input type="text" id="songTitle" placeholder="Enter song title">
+                </div>
+                <div class="form-group">
+                    <label>Artist</label>
+                    <input type="text" id="songArtist" placeholder="Enter artist name">
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label>Duration (seconds)</label>
+                        <input type="number" id="songDuration" placeholder="Duration" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Rating (1-10)</label>
+                        <input type="number" id="songRating" placeholder="Rating" min="1" max="10">
+                    </div>
+                </div>
+                <button class="btn-primary modal-submit" onclick="addSong()">Add Song</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizer Modal -->
+    <div id="visualizerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Algorithm Visualization</h2>
+                <button class="modal-close" onclick="closeVisualizer()">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="visualizerContent" class="visualizer-content">
+                    <p class="empty-state">No operations to visualize</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dsa.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

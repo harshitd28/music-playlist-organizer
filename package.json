@@ -1,0 +1,17 @@
+{
+  "name": "music-playlist-organizer",
+  "version": "1.0.0",
+  "description": "A Music Playlist Organizer demonstrating DSA algorithms - Circular Queue, Binary Search Tree, and Priority Queue",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -o",
+    "start": "npm run dev"
+  },
+  "keywords": ["DSA", "music", "playlist", "algorithms", "data-structures"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
+
